@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void populateArrayItems() {
 
-        // Populate the array items with the current content of todo text file
-        //readItems();
-
         // Populate the array items with the current content of the database
         readItemfromDatabase();
 
@@ -102,50 +99,9 @@ public class MainActivity extends AppCompatActivity {
         // Clear out the text
         etEditText.setText("");
 
-        // Write to file all the array items
-        //writeItems();
-
         // Write to file the new item
         writeItemtoDatabase(item);
     }
-
-//
-//    private void readItems () {
-//
-//        // Get a reference to a special directory that this application is able to read and write from
-//        File filesDir = getFilesDir();
-//        File file = new File(filesDir, "todoTxt");
-//
-//        // Read each line from the file to populate the array items
-//        try {
-//            todoItems = new ArrayList<>(FileUtils.readLines(file));
-//
-//        } catch (FileNotFoundException e) {
-//
-//            /* If the array list is not yet created, create initial file without data elements
-//               to avoid using null adapter reference in setAdapter() */
-//            if (todoItems == null) {
-//                todoItems = new ArrayList<>();
-//                writeItems();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void writeItems () {
-//
-//        // Get a reference to a special directory that this application is able to read and write from
-//        File filesDir = getFilesDir();
-//        File file = new File(filesDir, "todoTxt");
-//
-//        // Write to file the value of each item in todoItems
-//        try {
-//            FileUtils.writeLines(file, todoItems);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -165,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
             // Notify the adapter that the ListView needs to be refreshed
             aToDoAdapter.notifyDataSetChanged();
 
-            // Write to file the remaining items in the array list
-            //writeItems();
         }
     }
 
