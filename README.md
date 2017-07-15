@@ -38,6 +38,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+- Updating items using SQLite; retrieving item ID of the item to be updated   
 
 ## License
 
