@@ -3,6 +3,7 @@ package com.codepath.easydo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.id;
 import static android.R.attr.value;
 import static android.content.ContentValues.TAG;
 
@@ -150,5 +152,37 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
+    // Update the item
+    public int updateItem(String origItem, String newItem) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        values.put(KEY_ITEM_TEXT, newItem);
+
+        // Updating the item with the specified ID
+        return db.update(TABLE_ITEMS, values, KEY_ITEM_ID + " = ?",
+                new String[] { String.valueOf(getid(origItem)) });
+    }
+
+    public String getid(String  item) throws SQLException
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        System.out.println("ddbpos="+item);
+        long recc = 0;
+        String rec = null;
+
+        // item is a String so put it inside '"+____+"'
+        // Example: WHERE text= 'Item 1'
+        Cursor mCursor = db.rawQuery(
+                "SELECT " + KEY_ITEM_ID + " FROM " + TABLE_ITEMS + " WHERE " + KEY_ITEM_TEXT + "= '"+item+"'" , null);
+
+        if (mCursor != null)
+        {
+            mCursor.moveToFirst();
+            recc=mCursor.getLong(0);
+            rec=String.valueOf(recc);
+        }
+        return rec;
+    }
 }

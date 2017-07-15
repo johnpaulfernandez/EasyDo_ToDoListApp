@@ -154,6 +154,11 @@ public class MainActivity extends AppCompatActivity {
             // Extract name value from result extras
             String strItem = data.getExtras().getString(ID_EDIT_ITEM);
 
+            // Pass the context and use the singleton method
+            databaseHelper = DatabaseHelper.getInstance(this);
+
+            databaseHelper.updateItem(todoItems.get(iItemIndex), strItem);
+
             // Update the specific array item with the intent data
             todoItems.set(iItemIndex, strItem);
 
