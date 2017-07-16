@@ -1,6 +1,7 @@
 package com.codepath.easydo;
 
 import android.content.Intent;
+import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 50;
 
-    ArrayList<String> todoItems;
-    ArrayAdapter<String> aToDoAdapter;
+    ArrayList<Items> todoItems;
+    ToDoAdapter aToDoAdapter;
     ListView lvItems;
     EditText etEditText;
     private int iItemIndex;
@@ -67,9 +69,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+                Items item = aToDoAdapter.getItem(position);
+
                 // Launch Edit Item Activity
                 Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-                i.putExtra(ID_EDIT_ITEM, todoItems.get(position));
+                i.putExtra(ID_EDIT_ITEM, item);
                 startActivityForResult(i, REQUEST_CODE);
 
                 // Save the index of updated item
@@ -83,17 +88,17 @@ public class MainActivity extends AppCompatActivity {
         // Populate the array items with the current content of the database
         readItemfromDatabase();
 
-        // Initialize the adapter with simple Textview as layout for each of the array items
-        aToDoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todoItems);
+        // Create the adapter to convert the array to views
+        aToDoAdapter = new ToDoAdapter(this, todoItems);
 
     }
 
     public void onAddItem(View view) {
 
-        Items item = new Items();
+        Items item = new Items(etEditText.getText().toString());
 
         // Add the text to the adapter
-        aToDoAdapter.add(etEditText.getText().toString());
+        aToDoAdapter.add(item);
         item.text = etEditText.getText().toString();
 
         // Clear out the text
@@ -113,10 +118,10 @@ public class MainActivity extends AppCompatActivity {
             // Pass the context and use the singleton method
             databaseHelper = DatabaseHelper.getInstance(this);
 
-            databaseHelper.updateItem(todoItems.get(iItemIndex), strItem);
+            databaseHelper.updateItem(todoItems.get(iItemIndex).getText(), strItem);
 
             // Update the specific array item with the intent data
-            todoItems.set(iItemIndex, strItem);
+            todoItems.get(iItemIndex).setText(strItem);
 
             // Notify the adapter that the ListView needs to be refreshed
             aToDoAdapter.notifyDataSetChanged();
@@ -139,20 +144,18 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = DatabaseHelper.getInstance(this);
 
         // Get all posts from database
-        List<Items> items = databaseHelper.getAllItems();
+        ArrayList<Items> items = databaseHelper.getAllItems();
 
         todoItems = new ArrayList<>();
 
-        for (Items item : items) {
-            todoItems.add(item.text);
-        }
+        todoItems.addAll(items);
     }
 
     private void deleteRecord(int position) {
         // Pass the context and use the singleton method
         databaseHelper = DatabaseHelper.getInstance(this);
 
-        databaseHelper.deleteItem(todoItems.get(position));
+        databaseHelper.deleteItem(todoItems.get(position).getText());
     }
 
 

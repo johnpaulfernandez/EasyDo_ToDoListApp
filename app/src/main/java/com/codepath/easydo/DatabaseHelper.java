@@ -109,8 +109,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-    public List<Items> getAllItems() {
-        List<Items> items = new ArrayList<>();
+    public ArrayList<Items> getAllItems() {
+        ArrayList<Items> items = new ArrayList<>();
 
         // SELECT * FROM ITEMS
         String ITEMS_SELECT_QUERY =

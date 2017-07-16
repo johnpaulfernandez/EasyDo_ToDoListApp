@@ -20,9 +20,11 @@ public class EditItemActivity extends AppCompatActivity {
         // Find the view from XML
         etEditItem = (EditText) findViewById(R.id.etEditItem);
 
+        Items item = (Items) getIntent().getSerializableExtra(ID_EDIT_ITEM);
+
         // Get the passed variable from Intent
-        etEditItem.setText(getIntent().getStringExtra(ID_EDIT_ITEM));
-        etEditItem.setSelection(etEditItem.getText().length());
+        etEditItem.setText(item.getText());
+        etEditItem.setSelection(item.getText().length());
     }
 
 
