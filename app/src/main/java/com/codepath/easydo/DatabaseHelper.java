@@ -9,10 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static android.R.attr.id;
-import static android.R.attr.value;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -32,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     // Items Table Columns
     private static final String KEY_ITEM_ID = "id";
-    private static final String KEY_ITEM_TEXT = "text";
+    private static final String KEY_ITEM_TASK = "task";
 
     /**
      * Constructor should be private to prevent direct instantiation.
@@ -57,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String CREATE_ITEMS_TABLE = "CREATE TABLE " + TABLE_ITEMS +
                 "(" +
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_ITEM_TEXT + " TEXT" +
+                KEY_ITEM_TASK + " TEXT" +
                 ")";
 
         db.execSQL(CREATE_ITEMS_TABLE);
@@ -96,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         try {
 
             ContentValues values = new ContentValues();
-             values.put(KEY_ITEM_TEXT, item.text);
+             values.put(KEY_ITEM_TASK, item.getTask());
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             db.insertOrThrow(TABLE_ITEMS, null, values);
@@ -124,7 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             if (cursor.moveToFirst()) {
                 do {
                     Items newItem = new Items();
-                    newItem.text = cursor.getString(cursor.getColumnIndex(KEY_ITEM_TEXT));
+                    newItem.task = cursor.getString(cursor.getColumnIndex(KEY_ITEM_TASK));
                     items.add(newItem);
                 } while(cursor.moveToNext());
             }
@@ -143,7 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.beginTransaction();
         try {
 
-            db.delete(TABLE_ITEMS, KEY_ITEM_TEXT + "=?", new String[]{String.valueOf(item)});
+            db.delete(TABLE_ITEMS, KEY_ITEM_TASK + "=?", new String[]{String.valueOf(item)});
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to delete the record");
@@ -157,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ITEM_TEXT, newItem);
+        values.put(KEY_ITEM_TASK, newItem);
 
         // Updating the item with the specified ID
         return db.update(TABLE_ITEMS, values, KEY_ITEM_ID + " = ?",
@@ -173,9 +170,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String rec = null;
 
         // item is a String so put it inside '"+____+"'
-        // Example: WHERE text= 'Item 1'
+        // Example: WHERE task= 'Item 1'
         Cursor mCursor = db.rawQuery(
-                "SELECT " + KEY_ITEM_ID + " FROM " + TABLE_ITEMS + " WHERE " + KEY_ITEM_TEXT + "= '"+item+"'" , null);
+                "SELECT " + KEY_ITEM_ID + " FROM " + TABLE_ITEMS + " WHERE " + KEY_ITEM_TASK + "= '"+item+"'" , null);
 
         if (mCursor != null)
         {

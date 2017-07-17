@@ -7,12 +7,14 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CheckBox;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,17 +23,13 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static android.R.attr.priority;
-import static com.codepath.easydo.EditItemActivity.ID_EDIT_ITEM;
-import static com.codepath.easydo.R.id.etEditItem;
-import static com.codepath.easydo.R.id.etTaskName;
 import static com.codepath.easydo.R.id.spPriority;
 
 /**
  * Created by John on 7/16/2017.
  */
 
-public class DetailsDialogFragment extends DialogFragment {
+public class DetailsDialogFragment extends DialogFragment implements TextView.OnEditorActionListener{
 
     public static final String ID_DATE = "10";
     public static final String ID_SORT_ORDER = "11";
@@ -48,10 +46,17 @@ public class DetailsDialogFragment extends DialogFragment {
     static final Calendar c = Calendar.getInstance();
     public static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
     public static String dueDate;
-    Items toDoItem;
+    private Items toDoItem;
+    private Button btnSave;
 
     public FragmentManager fm;
     public DatePickerFragment newFragment;
+
+    // 1. Defines the listener interface with a method passing back data result.
+    public interface EditDetailsDialogListener {
+        void onFinishEditDialog(Items toDoItem);
+    }
+
 
     public DetailsDialogFragment() {
         // Empty constructor is required for DialogFragment
@@ -89,10 +94,11 @@ public class DetailsDialogFragment extends DialogFragment {
         etTaskName = (EditText) view.findViewById(R.id.etTaskName);
         priority = (Spinner) view.findViewById(spPriority);
         dateView = (TextView) view.findViewById(R.id.tvDueDate);
+        btnSave = (Button) view.findViewById(R.id.btnSave);
 
         // Get the passed variable from Intent
-        etTaskName.setText(toDoItem.getText());
-        etTaskName.setSelection(toDoItem.getText().length());
+        etTaskName.setText(toDoItem.getTask());
+        etTaskName.setSelection(toDoItem.getTask().length());
 
         priority.setSelection(priorityIndex);
 
@@ -111,6 +117,42 @@ public class DetailsDialogFragment extends DialogFragment {
         fm = getFragmentManager();
 
         showDatePickerDialog();
+
+        // Setup a callback when the the SAVE button is pressed on keyboard
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                priorityIndex = priority.getSelectedItemPosition();
+
+                year = c.get(Calendar.YEAR);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
+
+                toDoItem.setTask(etTaskName.getText().toString());
+
+                // Return input task back to activity through the implemented listener
+                EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();
+                listener.onFinishEditDialog(toDoItem);
+                // Close the dialog and return back to the parent activity
+                dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        if (EditorInfo.IME_ACTION_SEND == actionId) {
+            // Return input task back to activity through the implemented listener
+              EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();
+              listener.onFinishEditDialog(toDoItem);
+              // Close the dialog and return back to the parent activity
+              dismiss();
+              return true;
+        }
+        return false;
     }
 
     public void onResume() {
@@ -147,15 +189,15 @@ public class DetailsDialogFragment extends DialogFragment {
         });
     }
 
-    public void onSave(View view) {
-
-        priorityIndex = priority.getSelectedItemPosition();
-
-        this.year = c.get(Calendar.YEAR);
-        this.month = c.get(Calendar.MONTH);
-        this.day = c.get(Calendar.DAY_OF_MONTH);;
-
-        // Close the dialog and return back to the parent activity
-        dismiss();
-    }
+//    public void onSave(View view) {
+//
+//        priorityIndex = priority.getSelectedItemPosition();
+//
+//        this.year = c.get(Calendar.YEAR);
+//        this.month = c.get(Calendar.MONTH);
+//        this.day = c.get(Calendar.DAY_OF_MONTH);;
+//
+//        // Close the dialog and return back to the parent activity
+//        dismiss();
+//    }
 }

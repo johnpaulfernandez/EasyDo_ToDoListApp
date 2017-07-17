@@ -23,8 +23,8 @@ public class EditItemActivity extends AppCompatActivity {
         Items item = (Items) getIntent().getSerializableExtra(ID_EDIT_ITEM);
 
         // Get the passed variable from Intent
-        etEditItem.setText(item.getText());
-        etEditItem.setSelection(item.getText().length());
+        etEditItem.setText(item.getTask());
+        etEditItem.setSelection(item.getTask().length());
     }
 
 

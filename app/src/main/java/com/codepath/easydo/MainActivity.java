@@ -1,41 +1,34 @@
 package com.codepath.easydo;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Movie;
+import android.content.ClipData;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import static com.codepath.easydo.DetailsDialogFragment.c;
 import static com.codepath.easydo.DetailsDialogFragment.dueDate;
-import static com.codepath.easydo.EditItemActivity.ID_EDIT_ITEM;
 
-public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, DetailsDialogFragment.EditDetailsDialogListener {
 
     private static final int REQUEST_CODE = 50;
 
     ArrayList<Items> todoItems;
     ToDoAdapter aToDoAdapter;
     ListView lvItems;
-    EditText etEditText;
     private int iItemIndex;
 
     DatabaseHelper databaseHelper;
     DetailsDialogFragment detailsDialogFragment;
-
+    private boolean newItem;
 
 
     @Override
@@ -48,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         // Connect the adapter to a ListView to convert the array items into View items
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(aToDoAdapter);
-
-        // Find the view from XML
-        etEditText = (EditText)findViewById(R.id.etEditText);
 
         // Remove from the array list the item in this AdapterView that has been clicked and held
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -65,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 // Notify the adapter that the ListView needs to be refreshed
                 aToDoAdapter.notifyDataSetChanged();
 
-                // Write to file the remaining items in the array list
-                //writeItems();
-
                 // Notify that the callback consumed the long click
                 return true;
             }
@@ -78,19 +65,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Items item = aToDoAdapter.getItem(position);
+                Items item = new Items();
+                item.setTask(todoItems.get(position).getTask());
+                //item.setDueDate(todoItems.get(position).getDueDate());
 
-//                // Launch Edit Item Activity
-//                Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-//                i.putExtra(ID_EDIT_ITEM, item);
-//                startActivityForResult(i, REQUEST_CODE);
-
-                FragmentManager fm = getSupportFragmentManager();
-                detailsDialogFragment = DetailsDialogFragment.newInstance("Settings", item);
-                detailsDialogFragment.show(fm, "fragment_details");
+                newItem = false;
+                addUpdateTaskDetails(item);
 
                 // Save the index of updated item
                 iItemIndex = position;
+
             }
         });
     }
@@ -107,38 +91,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void onAddItem(View view) {
 
-        Items item = new Items(etEditText.getText().toString());
+        Items item = new Items();
+        item.setTask("");
+        //item.setDueDate();
 
-        // Add the text to the adapter
-        aToDoAdapter.add(item);
-        item.text = etEditText.getText().toString();
-
-        // Clear out the text
-        etEditText.setText("");
-
-        // Write to file the new item
-        writeItemtoDatabase(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            // Extract name value from result extras
-            String strItem = data.getExtras().getString(ID_EDIT_ITEM);
-
-            // Pass the context and use the singleton method
-            databaseHelper = DatabaseHelper.getInstance(this);
-
-            databaseHelper.updateItem(todoItems.get(iItemIndex).getText(), strItem);
-
-            // Update the specific array item with the intent data
-            todoItems.get(iItemIndex).setText(strItem);
-
-            // Notify the adapter that the ListView needs to be refreshed
-            aToDoAdapter.notifyDataSetChanged();
-
-        }
+        newItem = true;
+        addUpdateTaskDetails(item);
     }
 
     private void writeItemtoDatabase(Items items) {
@@ -167,7 +125,39 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         // Pass the context and use the singleton method
         databaseHelper = DatabaseHelper.getInstance(this);
 
-        databaseHelper.deleteItem(todoItems.get(position).getText());
+        databaseHelper.deleteItem(todoItems.get(position).getTask());
+    }
+
+    private void addUpdateTaskDetails(Items item) {
+        FragmentManager fm = getSupportFragmentManager();
+        detailsDialogFragment = DetailsDialogFragment.newInstance("Settings", item);
+        detailsDialogFragment.show(fm, "fragment_details");
+    }
+
+    // Listener is triggered on clicking SAVE button in DetailsDialogFragment
+    // Access the data result passed by the DetailsDialogFragment
+    @Override
+    public void onFinishEditDialog(Items toDoItem) {
+        if (newItem) {
+            // Add the text to the adapter
+            aToDoAdapter.add(toDoItem);
+
+            // Write to file the new item
+            writeItemtoDatabase(toDoItem);
+        }
+        else {
+            // Pass the context and use the singleton method
+            databaseHelper = DatabaseHelper.getInstance(this);
+
+            // Extract the task name and update the database
+            databaseHelper.updateItem(todoItems.get(iItemIndex).getTask(), toDoItem.getTask());
+
+            // Update the specific array item with the intent data
+            todoItems.get(iItemIndex).setTask(toDoItem.getTask());
+
+            // Notify the adapter that the ListView needs to be refreshed
+            aToDoAdapter.notifyDataSetChanged();
+        }
     }
 
     // Handle the date selected
@@ -181,9 +171,4 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         dueDate = detailsDialogFragment.format.format(c.getTime());
         detailsDialogFragment.showDate(year, monthOfYear + 1, dayOfMonth);
     }
-
-    public void onSave(View view) {
-        detailsDialogFragment.onSave(view);
-    }
-
 }
