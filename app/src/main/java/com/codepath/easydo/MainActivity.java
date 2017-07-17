@@ -1,22 +1,29 @@
 package com.codepath.easydo;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Movie;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import static com.codepath.easydo.DetailsDialogFragment.c;
+import static com.codepath.easydo.DetailsDialogFragment.dueDate;
 import static com.codepath.easydo.EditItemActivity.ID_EDIT_ITEM;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final int REQUEST_CODE = 50;
 
@@ -27,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private int iItemIndex;
 
     DatabaseHelper databaseHelper;
+    DetailsDialogFragment detailsDialogFragment;
+
 
 
     @Override
@@ -69,13 +78,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 Items item = aToDoAdapter.getItem(position);
 
-                // Launch Edit Item Activity
-                Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-                i.putExtra(ID_EDIT_ITEM, item);
-                startActivityForResult(i, REQUEST_CODE);
+//                // Launch Edit Item Activity
+//                Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+//                i.putExtra(ID_EDIT_ITEM, item);
+//                startActivityForResult(i, REQUEST_CODE);
+
+                FragmentManager fm = getSupportFragmentManager();
+                detailsDialogFragment = DetailsDialogFragment.newInstance("Settings", item);
+                detailsDialogFragment.show(fm, "fragment_details");
 
                 // Save the index of updated item
                 iItemIndex = position;
@@ -158,5 +170,20 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper.deleteItem(todoItems.get(position).getText());
     }
 
+    // Handle the date selected
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, monthOfYear);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        dueDate = detailsDialogFragment.format.format(c.getTime());
+        detailsDialogFragment.showDate(year, monthOfYear + 1, dayOfMonth);
+    }
+
+    public void onSave(View view) {
+        detailsDialogFragment.onSave(view);
+    }
 
 }

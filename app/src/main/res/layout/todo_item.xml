@@ -23,6 +23,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/tvItem"
         android:layout_alignStart="@+id/tvItem"
-        android:paddingTop="10dp"/>
+        android:paddingTop="10dp" />
 
 </RelativeLayout>

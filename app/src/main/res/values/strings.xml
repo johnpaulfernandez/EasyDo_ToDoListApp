@@ -3,4 +3,5 @@
     <string name="add">Add</string>
     <string name="add_item">Add item...</string>
     <string name="save">Save</string>
+    <string name="priority_prompt">Set Priority Level</string>
 </resources>
