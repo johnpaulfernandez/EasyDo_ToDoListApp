@@ -1,6 +1,9 @@
 package com.codepath.easydo;
 
+import android.widget.Spinner;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -8,14 +11,11 @@ import java.util.Date;
  */
 
 public class Items implements Serializable{
-    public String task;
-    public Date dueDate;
+    private String task;
+    private String priority;
+    private String dueDate;
 
     public Items() {
-    }
-
-    public Items(String task) {
-        this.task = task;
     }
 
     public String getTask() {
@@ -26,11 +26,19 @@ public class Items implements Serializable{
         this.task = task;
     }
 
-    public Date getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 }

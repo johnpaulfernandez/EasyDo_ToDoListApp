@@ -14,7 +14,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.codepath.easydo.DetailsDialogFragment.c;
 import static com.codepath.easydo.DetailsDialogFragment.dueDate;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, DetailsDialogFragment.EditDetailsDialogListener {
@@ -67,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                 Items item = new Items();
                 item.setTask(todoItems.get(position).getTask());
-                //item.setDueDate(todoItems.get(position).getDueDate());
+                item.setPriority(todoItems.get(position).getPriority());
+                item.setDueDate(todoItems.get(position).getDueDate());
 
                 newItem = false;
                 addUpdateTaskDetails(item);
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         Items item = new Items();
         item.setTask("");
-        //item.setDueDate();
+        item.setDueDate(Util.getDateTime());
 
         newItem = true;
         addUpdateTaskDetails(item);
@@ -150,10 +150,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             databaseHelper = DatabaseHelper.getInstance(this);
 
             // Extract the task name and update the database
-            databaseHelper.updateItem(todoItems.get(iItemIndex).getTask(), toDoItem.getTask());
+            databaseHelper.updateItem(todoItems.get(iItemIndex).getTask(), toDoItem);
 
             // Update the specific array item with the intent data
             todoItems.get(iItemIndex).setTask(toDoItem.getTask());
+            todoItems.get(iItemIndex).setPriority(toDoItem.getPriority());
+            todoItems.get(iItemIndex).setDueDate(toDoItem.getDueDate());
 
             // Notify the adapter that the ListView needs to be refreshed
             aToDoAdapter.notifyDataSetChanged();
@@ -164,11 +166,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, monthOfYear);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        dueDate.set(Calendar.YEAR, year);
+        dueDate.set(Calendar.MONTH, monthOfYear);
+        dueDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        dueDate = detailsDialogFragment.format.format(c.getTime());
         detailsDialogFragment.showDate(year, monthOfYear + 1, dayOfMonth);
     }
 }

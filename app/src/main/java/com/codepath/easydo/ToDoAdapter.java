@@ -7,9 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import static android.R.attr.priority;
+import static com.codepath.easydo.DetailsDialogFragment.dueDate;
+import static com.codepath.easydo.DetailsDialogFragment.day;
+import static com.codepath.easydo.DetailsDialogFragment.month;
+import static com.codepath.easydo.DetailsDialogFragment.year;
 
 /**
  * Created by John on 7/15/2017.
@@ -33,10 +41,16 @@ public class ToDoAdapter extends ArrayAdapter<Items> {
         }
         // Lookup view for data population
         TextView tvItem = (TextView) convertView.findViewById(R.id.tvItem);
-        TextView tvDate = (TextView) convertView.findViewById(R.id.tvDate);
+        TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
+        //TextView tvDate = (TextView) convertView.findViewById(R.id.tvDate);
+
         // Populate the data into the template view using the data object
-        tvItem.setText(item.task);
-        //tvDate.setTask(item.date);
+        tvItem.setText(item.getTask());
+        tvPriority.setText(item.getPriority());
+
+//        Calendar c;
+//        c = item.getDueDate();
+//        tvDate.setText(Util.showDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)));
 
         // Return the completed view to render on screen
         return convertView;

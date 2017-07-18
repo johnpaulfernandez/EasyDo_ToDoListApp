@@ -18,11 +18,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
+import static android.media.CamcorderProfile.get;
 import static com.codepath.easydo.R.id.spPriority;
 
 /**
@@ -43,9 +46,8 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
     public static int month;
     public static int day;
     // store the values selected into a Calendar instance
-    static final Calendar c = Calendar.getInstance();
+    static final Calendar dueDate = Calendar.getInstance();
     public static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-    public static String dueDate;
     private Items toDoItem;
     private Button btnSave;
 
@@ -100,12 +102,17 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
         etTaskName.setText(toDoItem.getTask());
         etTaskName.setSelection(toDoItem.getTask().length());
 
-        priority.setSelection(priorityIndex);
+        setSpinnerToValue(priority, toDoItem.getPriority());
 
+//        year = Integer.parseInt(toDoItem.getDueDate());
 
-        calendar = Calendar.getInstance();
+//        year = toDoItem.getDueDate().get(Calendar.YEAR);
+//        month = toDoItem.getDueDate().get(Calendar.MONTH);
+//        day = toDoItem.getDueDate().get(Calendar.DAY_OF_MONTH);
 
         if (year == 0 && month == 0 && day == 0) {
+            calendar = Calendar.getInstance();
+
             year = calendar.get(Calendar.YEAR);
             month = calendar.get(Calendar.MONTH);
             day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -123,13 +130,9 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
             @Override
             public void onClick(View v) {
 
-                priorityIndex = priority.getSelectedItemPosition();
-
-                year = c.get(Calendar.YEAR);
-                month = c.get(Calendar.MONTH);
-                day = c.get(Calendar.DAY_OF_MONTH);
-
                 toDoItem.setTask(etTaskName.getText().toString());
+                toDoItem.setPriority(priority.getSelectedItem().toString());
+                //toDoItem.setDueDate(dueDate);
 
                 // Return input task back to activity through the implemented listener
                 EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();
@@ -170,8 +173,7 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
     }
 
     public void showDate(int year, int month, int day) {
-        dateView.setText(new StringBuilder().append(day).append("/")
-                .append(month).append("/").append(year));
+        dateView.setText(Util.showDate(year, month, day));
     }
 
 
@@ -189,15 +191,15 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
         });
     }
 
-//    public void onSave(View view) {
-//
-//        priorityIndex = priority.getSelectedItemPosition();
-//
-//        this.year = c.get(Calendar.YEAR);
-//        this.month = c.get(Calendar.MONTH);
-//        this.day = c.get(Calendar.DAY_OF_MONTH);;
-//
-//        // Close the dialog and return back to the parent activity
-//        dismiss();
-//    }
+    public void setSpinnerToValue(Spinner spinner, String value) {
+        int index = 0;
+        SpinnerAdapter adapter = spinner.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (adapter.getItem(i).equals(value)) {
+                index = i;
+                break; // terminate loop
+            }
+        }
+        spinner.setSelection(index);
+    }
 }

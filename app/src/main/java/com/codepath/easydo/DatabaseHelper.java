@@ -25,11 +25,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
 
     // Table Names
-    private static final String TABLE_ITEMS = "items";
+    private static final String TABLE_ITEMS = "todoitems";
 
     // Items Table Columns
     private static final String KEY_ITEM_ID = "id";
     private static final String KEY_ITEM_TASK = "task";
+    private static final String KEY_ITEM_PRIORITY = "priority";
+    private static final String KEY_ITEM_DUEDATE = "duedate";
 
     /**
      * Constructor should be private to prevent direct instantiation.
@@ -54,7 +56,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String CREATE_ITEMS_TABLE = "CREATE TABLE " + TABLE_ITEMS +
                 "(" +
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_ITEM_TASK + " TEXT" +
+                KEY_ITEM_TASK + " TEXT," +
+                KEY_ITEM_PRIORITY + " TEXT," +
+                KEY_ITEM_DUEDATE + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ")";
 
         db.execSQL(CREATE_ITEMS_TABLE);
@@ -93,7 +97,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         try {
 
             ContentValues values = new ContentValues();
-             values.put(KEY_ITEM_TASK, item.getTask());
+            values.put(KEY_ITEM_TASK, item.getTask());
+            values.put(KEY_ITEM_PRIORITY, item.getPriority());
+            values.put(KEY_ITEM_DUEDATE, item.getDueDate());
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             db.insertOrThrow(TABLE_ITEMS, null, values);
@@ -121,7 +127,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             if (cursor.moveToFirst()) {
                 do {
                     Items newItem = new Items();
-                    newItem.task = cursor.getString(cursor.getColumnIndex(KEY_ITEM_TASK));
+                    newItem.setTask(cursor.getString(cursor.getColumnIndex(KEY_ITEM_TASK)));
+                    newItem.setPriority(cursor.getString(cursor.getColumnIndex(KEY_ITEM_PRIORITY)));
+                    newItem.setDueDate(cursor.getString(cursor.getColumnIndex(KEY_ITEM_DUEDATE)));
                     items.add(newItem);
                 } while(cursor.moveToNext());
             }
@@ -150,11 +158,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     // Update the item
-    public int updateItem(String origItem, String newItem) {
+    public int updateItem(String origItem, Items newItem) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ITEM_TASK, newItem);
+        values.put(KEY_ITEM_TASK, newItem.getTask());
+        values.put(KEY_ITEM_PRIORITY, newItem.getPriority());
+        values.put(KEY_ITEM_DUEDATE, newItem.getDueDate().toString());
 
         // Updating the item with the specified ID
         return db.update(TABLE_ITEMS, values, KEY_ITEM_ID + " = ?",
@@ -165,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        System.out.println("ddbpos="+item);
+        System.out.println("ddbpos=" + item);
         long recc = 0;
         String rec = null;
 
@@ -177,8 +187,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (mCursor != null)
         {
             mCursor.moveToFirst();
-            recc=mCursor.getLong(0);
-            rec=String.valueOf(recc);
+            recc = mCursor.getLong(0);
+            rec = String.valueOf(recc);
         }
         return rec;
     }
