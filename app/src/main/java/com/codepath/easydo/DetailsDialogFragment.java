@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -26,20 +28,21 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static android.media.CamcorderProfile.get;
+import static com.codepath.easydo.R.id.ibCancel;
 import static com.codepath.easydo.R.id.spPriority;
 
 /**
  * Created by John on 7/16/2017.
  */
 
-public class DetailsDialogFragment extends DialogFragment implements TextView.OnEditorActionListener{
+public class DetailsDialogFragment extends DialogFragment{
 
     public static final String ID_DATE = "10";
     public static final String ID_SORT_ORDER = "11";
     private DatePicker datePicker;
     private Calendar calendar;
     private TextView dateView;
-    public Spinner priority;
+    private Spinner priority;
     private EditText etTaskName;
     public static int priorityIndex;
     public static int year;
@@ -50,6 +53,7 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
     public static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
     private Items toDoItem;
     private Button btnSave;
+    private ImageButton ibCancel;
 
     public FragmentManager fm;
     public DatePickerFragment newFragment;
@@ -97,6 +101,7 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
         priority = (Spinner) view.findViewById(spPriority);
         dateView = (TextView) view.findViewById(R.id.tvDueDate);
         btnSave = (Button) view.findViewById(R.id.btnSave);
+        ibCancel = (ImageButton) view.findViewById(R.id.ibCancel);
 
         // Get the passed variable from Intent
         etTaskName.setText(toDoItem.getTask());
@@ -142,21 +147,28 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
             }
         });
 
+        ibCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close the dialog and return back to the parent activity
+                dismiss();
+            }
+        });
     }
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-        if (EditorInfo.IME_ACTION_SEND == actionId) {
-            // Return input task back to activity through the implemented listener
-              EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();
-              listener.onFinishEditDialog(toDoItem);
-              // Close the dialog and return back to the parent activity
-              dismiss();
-              return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//
+//        if (EditorInfo.IME_ACTION_SEND == actionId) {
+//            // Return input task back to activity through the implemented listener
+//              EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();
+//              listener.onFinishEditDialog(toDoItem);
+//              // Close the dialog and return back to the parent activity
+//              dismiss();
+//              return true;
+//        }
+//        return false;
+//    }
 
     public void onResume() {
         // Store access variables for window and blank point
@@ -192,14 +204,19 @@ public class DetailsDialogFragment extends DialogFragment implements TextView.On
     }
 
     public void setSpinnerToValue(Spinner spinner, String value) {
+
         int index = 0;
-        SpinnerAdapter adapter = spinner.getAdapter();
-        for (int i = 0; i < adapter.getCount(); i++) {
-            if (adapter.getItem(i).equals(value)) {
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.priority_array, R.layout.spinner_item1);
+        priority.setAdapter(adapter);
+
+        SpinnerAdapter spinnerAdapter = spinner.getAdapter();
+        for (int i = 0; i < spinnerAdapter.getCount(); i++) {
+            if (spinnerAdapter.getItem(i).equals(value)) {
                 index = i;
                 break; // terminate loop
             }
         }
         spinner.setSelection(index);
     }
+
 }

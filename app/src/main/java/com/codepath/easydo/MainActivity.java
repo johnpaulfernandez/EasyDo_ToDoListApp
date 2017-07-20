@@ -2,9 +2,12 @@ package com.codepath.easydo;
 
 import android.app.DatePickerDialog;
 import android.content.ClipData;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -17,8 +20,6 @@ import java.util.Calendar;
 import static com.codepath.easydo.DetailsDialogFragment.dueDate;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, DetailsDialogFragment.EditDetailsDialogListener {
-
-    private static final int REQUEST_CODE = 50;
 
     ArrayList<Items> todoItems;
     ToDoAdapter aToDoAdapter;
@@ -40,6 +41,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         // Connect the adapter to a ListView to convert the array items into View items
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(aToDoAdapter);
+
+        // Find the toolbar view and set as ActionBar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Display icon in the toolbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        toolbar.setTitleTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
 
         // Remove from the array list the item in this AdapterView that has been clicked and held
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
