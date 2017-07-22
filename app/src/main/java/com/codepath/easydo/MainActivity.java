@@ -9,13 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -33,20 +31,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     DatabaseHelper databaseHelper;
     DetailsDialogFragment detailsDialogFragment;
     private boolean newItem;
-    public CompoundButton.OnCheckedChangeListener cbListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        LinearLayout layout = (LinearLayout) findViewById(R.id.layoutAppTitle);
-//        AlphaAnimation animation = new AlphaAnimation(0.0f , 1.0f ) ;
-//        animation.setFillAfter(true);
-//        animation.setDuration(1200);
-//        // Apply the animation ( fade In ) to the layout
-//        layout.startAnimation(animation);
 
         populateArrayItems();
 
@@ -90,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Items item = new Items();
                 item.setTask(todoItems.get(position).getTask());
                 item.setPriority(todoItems.get(position).getPriority());
-                item.setStatus(todoItems.get(position).getStatus());
                 item.setDueDate(todoItems.get(position).getDueDate());
+                item.setStatus(todoItems.get(position).getStatus());
 
                 newItem = false;
                 addUpdateTaskDetails(item);
@@ -110,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         // Create the adapter to convert the array to views
         aToDoAdapter = new ToDoAdapter(this, todoItems);
-
     }
 
     public void onAddItem(View view) {
@@ -162,28 +151,33 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     // Access the data result passed by the DetailsDialogFragment
     @Override
     public void onFinishEditDialog(Items toDoItem) {
-        if (newItem) {
-            // Add the text to the adapter
-            aToDoAdapter.add(toDoItem);
 
-            // Write to file the new item
-            writeItemtoDatabase(toDoItem);
-        }
-        else {
-            // Pass the context and use the singleton method
-            databaseHelper = DatabaseHelper.getInstance(this);
+        try {
+            if (newItem) {
+                // Add the text to the adapter
+                aToDoAdapter.add(toDoItem);
 
-            // Extract the task name and update the database
-            databaseHelper.updateItem(todoItems.get(iItemIndex).getTask(), toDoItem);
+                // Write to file the new item
+                writeItemtoDatabase(toDoItem);
+            }
+            else {
+                // Pass the context and use the singleton method
+                databaseHelper = DatabaseHelper.getInstance(this);
 
-            // Update the specific array item with the intent data
-            todoItems.get(iItemIndex).setTask(toDoItem.getTask());
-            todoItems.get(iItemIndex).setPriority(toDoItem.getPriority());
+                // Extract the task name and update the database
+                databaseHelper.updateItem(todoItems.get(iItemIndex).getTask(), toDoItem);
+
+                // Update the specific array item with the intent data
+                todoItems.get(iItemIndex).setTask(toDoItem.getTask());
+                todoItems.get(iItemIndex).setPriority(toDoItem.getPriority());
             todoItems.get(iItemIndex).setStatus(toDoItem.getStatus());
-            todoItems.get(iItemIndex).setDueDate(toDoItem.getDueDate());
+                todoItems.get(iItemIndex).setDueDate(toDoItem.getDueDate());
 
-            // Notify the adapter that the ListView needs to be refreshed
-            aToDoAdapter.notifyDataSetChanged();
+                // Notify the adapter that the ListView needs to be refreshed
+                aToDoAdapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

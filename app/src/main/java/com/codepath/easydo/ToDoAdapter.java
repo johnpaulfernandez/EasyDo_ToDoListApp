@@ -33,19 +33,13 @@ import static com.codepath.easydo.R.id.cbStatus;
 
 public class ToDoAdapter extends ArrayAdapter<Items> {
 
-    public List<Items> todoListItem;
     private Context mContext;
 
-    // Pass the context and use the singleton method
-    DatabaseHelper databaseHelper;
 
     CompoundButton.OnCheckedChangeListener cbListener;
 
     public ToDoAdapter(@NonNull Context context, @NonNull ArrayList<Items> objects) {
         super(context, 0, objects);
-        this.todoListItem = objects;
-        this.mContext = context;
-        databaseHelper = DatabaseHelper.getInstance(mContext);
     }
 
     @NonNull
@@ -68,18 +62,20 @@ public class ToDoAdapter extends ArrayAdapter<Items> {
         tvItem.setText(item.getTask());
         tvPriority.setText(item.getPriority());
 
-        cbStatus.setTag(Integer.valueOf(position)); // set the tag so we can identify the correct row in the listener
+        cbStatus.setTag(position); // set the tag so we can identify the correct row in the listener
         cbStatus.setChecked(item.getStatus().equals("Done"));
-        cbStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                item.setStatus(isChecked ? "Done" : "To-Do");
+        try {
+            cbStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    item.setStatus(isChecked ? "Done" : "To-Do");
+                }
+            }); // set the listener
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                // Extract the task name and update the database
-                databaseHelper.updateItem(todoListItem.get(position).getTask(), item);
-            }
-        }); // set the listener
 
         switch (item.getPriority()) {
             case "Low":
