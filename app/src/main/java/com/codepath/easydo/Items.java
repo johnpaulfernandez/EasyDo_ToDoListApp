@@ -14,6 +14,7 @@ public class Items implements Serializable{
     private String task;
     private String priority;
     private String dueDate;
+    private String status;
 
     public Items() {
     }
@@ -40,5 +41,13 @@ public class Items implements Serializable{
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

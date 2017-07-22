@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String KEY_ITEM_TASK = "task";
     private static final String KEY_ITEM_PRIORITY = "priority";
     private static final String KEY_ITEM_DUEDATE = "duedate";
+    private static final String KEY_ITEM_STATUS = "status";
 
     /**
      * Constructor should be private to prevent direct instantiation.
@@ -58,7 +59,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_ITEM_TASK + " TEXT," +
                 KEY_ITEM_PRIORITY + " TEXT," +
-                KEY_ITEM_DUEDATE + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                KEY_ITEM_DUEDATE + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                KEY_ITEM_STATUS + " TEXT" +
                 ")";
 
         db.execSQL(CREATE_ITEMS_TABLE);
@@ -100,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             values.put(KEY_ITEM_TASK, item.getTask());
             values.put(KEY_ITEM_PRIORITY, item.getPriority());
             values.put(KEY_ITEM_DUEDATE, item.getDueDate());
+            values.put(KEY_ITEM_STATUS, item.getStatus());
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             db.insertOrThrow(TABLE_ITEMS, null, values);
@@ -130,6 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     newItem.setTask(cursor.getString(cursor.getColumnIndex(KEY_ITEM_TASK)));
                     newItem.setPriority(cursor.getString(cursor.getColumnIndex(KEY_ITEM_PRIORITY)));
                     newItem.setDueDate(cursor.getString(cursor.getColumnIndex(KEY_ITEM_DUEDATE)));
+                    newItem.setStatus(cursor.getString(cursor.getColumnIndex(KEY_ITEM_STATUS)));
                     items.add(newItem);
                 } while(cursor.moveToNext());
             }
@@ -165,6 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_ITEM_TASK, newItem.getTask());
         values.put(KEY_ITEM_PRIORITY, newItem.getPriority());
         values.put(KEY_ITEM_DUEDATE, newItem.getDueDate().toString());
+        values.put(KEY_ITEM_STATUS, newItem.getStatus());
 
         // Updating the item with the specified ID
         return db.update(TABLE_ITEMS, values, KEY_ITEM_ID + " = ?",

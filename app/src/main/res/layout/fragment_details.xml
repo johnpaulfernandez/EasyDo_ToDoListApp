@@ -81,7 +81,7 @@
         android:layout_toEndOf="@+id/tvDueDateLabel"
         android:layout_toRightOf="@+id/tvDueDateLabel"
         android:text="25/12/2000"
-        android:textColor="@color/cardview_dark_background"
+        android:textColor="@android:color/background_dark"
         android:textSize="18sp" />
 
     <Button
@@ -104,5 +104,28 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvDueDateLabel"
+        android:layout_alignStart="@+id/tvDueDateLabel"
+        android:layout_below="@+id/tvDueDateLabel"
+        android:layout_marginTop="37dp"
+        android:text="Status"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvStatus"
+        android:layout_alignEnd="@+id/spPriority"
+        android:layout_alignLeft="@+id/spPriority"
+        android:layout_alignRight="@+id/spPriority"
+        android:layout_alignStart="@+id/spPriority"
+        android:entries="@array/status_array"/>
 
 </RelativeLayout>

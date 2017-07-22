@@ -30,6 +30,7 @@ import java.util.Locale;
 import static android.media.CamcorderProfile.get;
 import static com.codepath.easydo.R.id.ibCancel;
 import static com.codepath.easydo.R.id.spPriority;
+import static com.codepath.easydo.R.id.spStatus;
 
 /**
  * Created by John on 7/16/2017.
@@ -43,6 +44,7 @@ public class DetailsDialogFragment extends DialogFragment{
     private Calendar calendar;
     private TextView dateView;
     private Spinner priority;
+    private Spinner status;
     private EditText etTaskName;
     public static int priorityIndex;
     public static int year;
@@ -99,6 +101,7 @@ public class DetailsDialogFragment extends DialogFragment{
 
         etTaskName = (EditText) view.findViewById(R.id.etTaskName);
         priority = (Spinner) view.findViewById(spPriority);
+        status = (Spinner) view.findViewById(spStatus);
         dateView = (TextView) view.findViewById(R.id.tvDueDate);
         btnSave = (Button) view.findViewById(R.id.btnSave);
         ibCancel = (ImageButton) view.findViewById(R.id.ibCancel);
@@ -107,7 +110,8 @@ public class DetailsDialogFragment extends DialogFragment{
         etTaskName.setText(toDoItem.getTask());
         etTaskName.setSelection(toDoItem.getTask().length());
 
-        setSpinnerToValue(priority, toDoItem.getPriority());
+        setSpinnerToValue(priority, toDoItem.getPriority(), R.array.priority_array);
+        setSpinnerToValue(status, toDoItem.getStatus(), R.array.status_array);
 
 //        year = Integer.parseInt(toDoItem.getDueDate());
 
@@ -137,6 +141,7 @@ public class DetailsDialogFragment extends DialogFragment{
 
                 toDoItem.setTask(etTaskName.getText().toString());
                 toDoItem.setPriority(priority.getSelectedItem().toString());
+                toDoItem.setStatus(status.getSelectedItem().toString());
                 //toDoItem.setDueDate(dueDate);
 
                 // Return input task back to activity through the implemented listener
@@ -155,20 +160,6 @@ public class DetailsDialogFragment extends DialogFragment{
             }
         });
     }
-
-//    @Override
-//    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//
-//        if (EditorInfo.IME_ACTION_SEND == actionId) {
-//            // Return input task back to activity through the implemented listener
-//              EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();
-//              listener.onFinishEditDialog(toDoItem);
-//              // Close the dialog and return back to the parent activity
-//              dismiss();
-//              return true;
-//        }
-//        return false;
-//    }
 
     public void onResume() {
         // Store access variables for window and blank point
@@ -203,11 +194,11 @@ public class DetailsDialogFragment extends DialogFragment{
         });
     }
 
-    public void setSpinnerToValue(Spinner spinner, String value) {
+    public void setSpinnerToValue(Spinner spinner, String value, int arrayID) {
 
         int index = 0;
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.priority_array, R.layout.spinner_item1);
-        priority.setAdapter(adapter);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), arrayID, R.layout.spinner_item1);
+        spinner.setAdapter(adapter);
 
         SpinnerAdapter spinnerAdapter = spinner.getAdapter();
         for (int i = 0; i < spinnerAdapter.getCount(); i++) {
@@ -218,5 +209,4 @@ public class DetailsDialogFragment extends DialogFragment{
         }
         spinner.setSelection(index);
     }
-
 }

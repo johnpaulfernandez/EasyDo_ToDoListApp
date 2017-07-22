@@ -9,9 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -29,12 +33,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     DatabaseHelper databaseHelper;
     DetailsDialogFragment detailsDialogFragment;
     private boolean newItem;
+    public CompoundButton.OnCheckedChangeListener cbListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        LinearLayout layout = (LinearLayout) findViewById(R.id.layoutAppTitle);
+//        AlphaAnimation animation = new AlphaAnimation(0.0f , 1.0f ) ;
+//        animation.setFillAfter(true);
+//        animation.setDuration(1200);
+//        // Apply the animation ( fade In ) to the layout
+//        layout.startAnimation(animation);
 
         populateArrayItems();
 
@@ -48,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         // Display icon in the toolbar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_action_name);
+        getSupportActionBar().setLogo(R.drawable.ic_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         toolbar.setTitleTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
 
@@ -78,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Items item = new Items();
                 item.setTask(todoItems.get(position).getTask());
                 item.setPriority(todoItems.get(position).getPriority());
+                item.setStatus(todoItems.get(position).getStatus());
                 item.setDueDate(todoItems.get(position).getDueDate());
 
                 newItem = false;
@@ -166,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             // Update the specific array item with the intent data
             todoItems.get(iItemIndex).setTask(toDoItem.getTask());
             todoItems.get(iItemIndex).setPriority(toDoItem.getPriority());
+            todoItems.get(iItemIndex).setStatus(toDoItem.getStatus());
             todoItems.get(iItemIndex).setDueDate(toDoItem.getDueDate());
 
             // Notify the adapter that the ListView needs to be refreshed

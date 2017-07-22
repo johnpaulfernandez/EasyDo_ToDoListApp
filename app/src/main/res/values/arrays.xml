@@ -5,4 +5,8 @@
         <item>Medium</item>
         <item>High</item>
     </string-array>
+    <string-array name="status_array">
+        <item>To-Do</item>
+        <item>Done</item>
+    </string-array>
 </resources>

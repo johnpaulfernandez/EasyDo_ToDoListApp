@@ -16,6 +16,7 @@
     <style name="spinner_dropdown_style_theme1" parent="Widget.AppCompat.DropDownItem.Spinner">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">#ffffff</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="ActionBarTitle" parent="android:Widget.TextView">
