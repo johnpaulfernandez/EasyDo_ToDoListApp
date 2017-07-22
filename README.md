@@ -26,12 +26,13 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Add support for selecting the status of each todo item (and display in listview item)
+      [To-follow] Update item status in the database via checkbox in View
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/7aGMrID.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/WnzdBq5.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -40,6 +41,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 Describe any challenges encountered while building the app.
 - Updating items using SQLite; retrieving item ID of the item to be updated
 - Storing and retrieving dates from SQLite
+- Updating item status in the database via checkbox in View (To-follow)
 
 ## License
 
