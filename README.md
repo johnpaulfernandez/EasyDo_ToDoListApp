@@ -4,7 +4,7 @@ Easy Do! is an android app that allows building a todo list and basic todo items
 
 Submitted by: John Paul Fernandez
 
-Time spent: 5 hours spent in total
+Time spent: 15 hours spent in total
 
 ## User Stories
 
@@ -25,7 +25,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [None] List anything else that you can get done to improve the app functionality!
+* [x] Add support for selecting the status of each todo item (and display in listview item)
 
 ## Video Walkthrough 
 
