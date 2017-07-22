@@ -13,19 +13,23 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="64dp"
+        android:layout_height="107dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvItem"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/cbStatus"
-            android:layout_alignBottom="@+id/cbStatus"
-            android:layout_marginLeft="18dp"
-            android:layout_marginStart="18dp"
-            android:layout_toEndOf="@+id/cbStatus"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="21dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginRight="50dp"
+            android:paddingRight="40dp"
             android:layout_toRightOf="@+id/cbStatus"
+            android:gravity="center_vertical"
             android:text="Item 1"
             android:textColor="@color/cardview_dark_background"
             android:textSize="18sp" />
@@ -34,13 +38,13 @@
             android:id="@+id/tvPriority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
-            android:text="HIGH"
-            android:layout_alignTop="@+id/tvItem"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/tvItem"
+            android:layout_marginEnd="11dp"
             android:layout_marginRight="11dp"
-            android:layout_marginEnd="11dp" />
+            android:paddingLeft="15dp"
+            android:text="HIGH" />
 
         <CheckBox
             android:id="@+id/cbStatus"
