@@ -36,6 +36,20 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
+
+## Project Analysis
+
+As part of your pre-work submission, please reflect on the app and answer the following questions below:
+
+**Question 1:** "What are your reactions to the Android app development platform so far? Compare and contrast Android's approach to layouts and user interfaces in past platforms you've used."
+
+**Answer:** The Android platform is so interesting. Not only for app development for smartphones, tablets and other consumer electronic devices like TV and car entertainment systems, but for more and more embedded segments and connected devices. I've worked with JavaCard applications that run on SIM Card OS in the past, and Android's approach to layouts and user interfaces is way way better. SIM Cards use XML templates too for its applets, e.g., a mobile banking applet, to display text or read input from the user, but the SIM platform can only support rudimentary UI to show up on the phone, while Android provides rich options for layout and user interface.
+
+
+**Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
+
+**Answer:** `ArrayAdapter` is used in Android to convert data into View items, and it is important because it describes how to represent or visualize the data source into a corresponding View object. The adapter allocates the memory for each row, and it can function for View recycling as well. In this project, I used a custom `ArrayAdapter` to use a custom XML layout that represents the View template for each item. In `getView` method of the `ArrayAdapter`, `convertView` is the result of converting a custom XML layout to a Java object in memory and it serves as a template that can be reused or recycled by updating with new values.
+
 ## Notes
 
 Describe any challenges encountered while building the app.
