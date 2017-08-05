@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorControlHighlight"
-    tools:context="com.codepath.easydo.MainActivity">
+    tools:context="com.codepath.easydo.activities.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:titleTextColor="@android:color/white"
         android:background="?attr/colorPrimary"
-        android:contentInsetLeft="0dp"
-        android:contentInsetStart="0dp"
+        android:contentInsetLeft="@dimen/activity_content_inset"
+        android:contentInsetStart="@dimen/activity_content_inset"
         app:titleTextAppearance="@style/ActionBarTitle">
     </android.support.v7.widget.Toolbar>
 
@@ -28,8 +28,8 @@
         android:layout_below="@id/toolbar"
         android:divider="@null"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="@dimen/activity_margin_8dp"
+        android:layout_marginRight="@dimen/activity_margin_8dp"
         android:layout_marginTop="10dp"/>
 
     <Button
@@ -43,7 +43,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginRight="@dimen/activity_margin_12dp"
+        android:layout_marginEnd="@dimen/activity_margin_12dp"
+        android:layout_marginBottom="@dimen/activity_margin_12dp" />
 </RelativeLayout>

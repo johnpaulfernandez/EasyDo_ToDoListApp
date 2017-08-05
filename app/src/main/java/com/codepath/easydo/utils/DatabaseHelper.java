@@ -1,4 +1,4 @@
-package com.codepath.easydo;
+package com.codepath.easydo.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.codepath.easydo.models.Items;
 
 import java.util.ArrayList;
 

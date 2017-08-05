@@ -1,10 +1,13 @@
-package com.codepath.easydo;
+package com.codepath.easydo.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import com.codepath.easydo.models.Items;
+import com.codepath.easydo.R;
 
 public class EditItemActivity extends AppCompatActivity {
 

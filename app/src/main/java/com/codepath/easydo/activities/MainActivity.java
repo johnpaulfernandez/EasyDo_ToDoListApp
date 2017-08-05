@@ -1,8 +1,6 @@
-package com.codepath.easydo;
+package com.codepath.easydo.activities;
 
 import android.app.DatePickerDialog;
-import android.content.ClipData;
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,16 +8,20 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
+
+import com.codepath.easydo.utils.DatabaseHelper;
+import com.codepath.easydo.fragments.DetailsDialogFragment;
+import com.codepath.easydo.models.Items;
+import com.codepath.easydo.R;
+import com.codepath.easydo.adapters.ToDoAdapter;
+import com.codepath.easydo.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.codepath.easydo.DetailsDialogFragment.dueDate;
+import static com.codepath.easydo.fragments.DetailsDialogFragment.dueDate;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, DetailsDialogFragment.EditDetailsDialogListener {
 
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 // Update the specific array item with the intent data
                 todoItems.get(iItemIndex).setTask(toDoItem.getTask());
                 todoItems.get(iItemIndex).setPriority(toDoItem.getPriority());
-            todoItems.get(iItemIndex).setStatus(toDoItem.getStatus());
+                todoItems.get(iItemIndex).setStatus(toDoItem.getStatus());
                 todoItems.get(iItemIndex).setDueDate(toDoItem.getDueDate());
 
                 // Notify the adapter that the ListView needs to be refreshed

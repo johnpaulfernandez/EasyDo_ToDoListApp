@@ -1,4 +1,4 @@
-package com.codepath.easydo;
+package com.codepath.easydo.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

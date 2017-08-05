@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginLeft="@dimen/fragment_margin_10dp"
+        android:layout_marginStart="@dimen/fragment_margin_10dp"
+        android:layout_marginTop="@dimen/fragment_margin_22dp"
         android:text="Task"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
         android:layout_alignLeft="@+id/tvTaskLabel"
         android:layout_alignStart="@+id/tvTaskLabel"
         android:layout_below="@+id/etTaskName"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/fragment_margin_40dp"
         android:text="Priority"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -52,8 +52,8 @@
         android:layout_alignBottom="@+id/tvPriorityLabel"
         android:layout_alignLeft="@+id/etTaskName"
         android:layout_alignStart="@+id/etTaskName"
-        android:layout_marginLeft="27dp"
-        android:layout_marginStart="27dp"
+        android:layout_marginLeft="@dimen/fragment_margin_27dp"
+        android:layout_marginStart="@dimen/fragment_margin_27dp"
         android:entries="@array/priority_array"
         android:prompt="@string/priority_prompt"
         android:textSize="24sp" />
@@ -76,8 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tvDueDateLabel"
         android:layout_alignBottom="@+id/tvDueDateLabel"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginLeft="@dimen/fragment_margin_36dp"
+        android:layout_marginStart="@dimen/fragment_margin_36dp"
         android:layout_toEndOf="@+id/tvDueDateLabel"
         android:layout_toRightOf="@+id/tvDueDateLabel"
         android:text="25/12/2000"
@@ -88,13 +88,13 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="400dp"
         android:background="@color/colorHolo"
+        android:layout_marginTop="@dimen/fragment_margin_400dp"
         android:text="@string/save"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:id="@+id/ibCancel"
@@ -112,7 +112,7 @@
         android:layout_alignLeft="@+id/tvDueDateLabel"
         android:layout_alignStart="@+id/tvDueDateLabel"
         android:layout_below="@+id/tvDueDateLabel"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="@dimen/fragment_margin_36dp"
         android:text="Status"
         android:textSize="18sp"
         android:textStyle="bold" />

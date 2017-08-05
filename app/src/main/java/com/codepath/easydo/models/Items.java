@@ -1,4 +1,4 @@
-package com.codepath.easydo;
+package com.codepath.easydo.models;
 
 import android.widget.Spinner;
 

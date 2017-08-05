@@ -1,4 +1,4 @@
-package com.codepath.easydo;
+package com.codepath.easydo.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

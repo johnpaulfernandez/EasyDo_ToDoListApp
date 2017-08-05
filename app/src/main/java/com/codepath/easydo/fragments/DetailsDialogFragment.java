@@ -1,4 +1,4 @@
-package com.codepath.easydo;
+package com.codepath.easydo.fragments;
 
 import android.graphics.Point;
 import android.os.Bundle;
@@ -7,28 +7,26 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import com.codepath.easydo.models.Items;
+import com.codepath.easydo.R;
+import com.codepath.easydo.utils.Util;
+
 import java.util.Calendar;
-import java.util.Locale;
 
 import static android.media.CamcorderProfile.get;
-import static com.codepath.easydo.R.id.ibCancel;
 import static com.codepath.easydo.R.id.spPriority;
 import static com.codepath.easydo.R.id.spStatus;
 
@@ -38,21 +36,16 @@ import static com.codepath.easydo.R.id.spStatus;
 
 public class DetailsDialogFragment extends DialogFragment{
 
-    public static final String ID_DATE = "10";
-    public static final String ID_SORT_ORDER = "11";
-    private DatePicker datePicker;
     private Calendar calendar;
     private TextView dateView;
     private Spinner priority;
     private Spinner status;
     private EditText etTaskName;
-    public static int priorityIndex;
     public static int year;
     public static int month;
     public static int day;
     // store the values selected into a Calendar instance
-    static final Calendar dueDate = Calendar.getInstance();
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+    public static final Calendar dueDate = Calendar.getInstance();
     private Items toDoItem;
     private Button btnSave;
     private ImageButton ibCancel;
@@ -90,7 +83,6 @@ public class DetailsDialogFragment extends DialogFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.fragment_filter, container);
         return getActivity().getLayoutInflater().inflate(R.layout.fragment_details, container);
 
     }
@@ -112,12 +104,6 @@ public class DetailsDialogFragment extends DialogFragment{
 
         setSpinnerToValue(priority, toDoItem.getPriority(), R.array.priority_array);
         setSpinnerToValue(status, toDoItem.getStatus(), R.array.status_array);
-
-//        year = Integer.parseInt(toDoItem.getDueDate());
-
-//        year = toDoItem.getDueDate().get(Calendar.YEAR);
-//        month = toDoItem.getDueDate().get(Calendar.MONTH);
-//        day = toDoItem.getDueDate().get(Calendar.DAY_OF_MONTH);
 
         if (year == 0 && month == 0 && day == 0) {
             calendar = Calendar.getInstance();
@@ -142,7 +128,6 @@ public class DetailsDialogFragment extends DialogFragment{
                 toDoItem.setTask(etTaskName.getText().toString());
                 toDoItem.setPriority(priority.getSelectedItem().toString());
                 toDoItem.setStatus(status.getSelectedItem().toString());
-                //toDoItem.setDueDate(dueDate);
 
                 // Return input task back to activity through the implemented listener
                 EditDetailsDialogListener listener = (EditDetailsDialogListener) getActivity();

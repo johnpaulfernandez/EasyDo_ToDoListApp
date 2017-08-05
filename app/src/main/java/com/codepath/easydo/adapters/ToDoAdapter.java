@@ -1,42 +1,27 @@
-package com.codepath.easydo;
+package com.codepath.easydo.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import com.codepath.easydo.R;
+import com.codepath.easydo.models.Items;
 
-import static android.R.attr.priority;
-import static com.codepath.easydo.DetailsDialogFragment.dueDate;
-import static com.codepath.easydo.DetailsDialogFragment.day;
-import static com.codepath.easydo.DetailsDialogFragment.month;
-import static com.codepath.easydo.DetailsDialogFragment.year;
-import static com.codepath.easydo.R.id.cbStatus;
+import java.util.ArrayList;
 
 /**
  * Created by John on 7/15/2017.
  */
 
 public class ToDoAdapter extends ArrayAdapter<Items> {
-
-    private Context mContext;
-
-
-    CompoundButton.OnCheckedChangeListener cbListener;
 
     public ToDoAdapter(@NonNull Context context, @NonNull ArrayList<Items> objects) {
         super(context, 0, objects);
@@ -56,7 +41,6 @@ public class ToDoAdapter extends ArrayAdapter<Items> {
         TextView tvItem = (TextView) convertView.findViewById(R.id.tvItem);
         TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
         CheckBox cbStatus = (CheckBox) convertView.findViewById(R.id.cbStatus);
-        //TextView tvDate = (TextView) convertView.findViewById(R.id.tvDate);
 
         // Populate the data into the template view using the data object
         tvItem.setText(item.getTask());
@@ -90,10 +74,6 @@ public class ToDoAdapter extends ArrayAdapter<Items> {
             default:
                 tvPriority.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         }
-
-//        Calendar c;
-//        c = item.getDueDate();
-//        tvDate.setText(Util.showDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)));
 
         // Return the completed view to render on screen
         return convertView;
